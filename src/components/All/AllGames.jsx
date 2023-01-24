@@ -1,45 +1,42 @@
 import axios, { AxiosHeaders } from "axios";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { getMainApi } from "../../Redux/Mainapi";
+import { Loading } from "../LoadingScreen/Loading";
 
 export function AllGames(){
 
     let [Allgames,setAllGames]= useState(null)
     let [gamesNumber,setgamesNumber]= useState(21)
    
-  
-  
-    const options = {
-        method: 'GET',
-        url: 'https://free-to-play-games-database.p.rapidapi.com/api/games',
-        headers: {
-          'X-RapidAPI-Key': 'fa7d552fdfmsh29adebcace07b64p15baecjsn34115d66cfe6',
-          'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
-        }
-      };
+    let dispatch = useDispatch()
+        
+    let  {allgames}  =useSelector(function(state){return state.game})
+   
 
 
-      function getAllgames(){
-        
-      axios.request(options).then(function (response) {
-       
-      
-        setAllGames(response.data.splice(0,gamesNumber))
-        
-      }).catch(function (error) {
-    });
-      }
       
      
-    useEffect( function(){
-      getAllgames() 
-    },[])
+    useLayoutEffect(()=>{
+      dispatch(getMainApi())
+   
+      
+    })
+      
+     
+    // useEffect( async function(){
+     
+    //   ()=>{  dispatch(()={getMainApi()})}
+
+    // },[])
     
     function getMoreGames(){
       let newgamesNumber =gamesNumber+=21
       setgamesNumber(newgamesNumber)
-      getAllgames()
+      getMainApi()
    
 
       
@@ -50,12 +47,17 @@ export function AllGames(){
 
 
 
-    return <div className="container w-75 py-4">
+    return <div className="container all w-75 py-4">
+       < Helmet>
+         <title>
+        AllGames
+         </title>
+      </ Helmet>
 
 
 <div className="row g-3 my-4">
 
-{Allgames!= null ? Allgames.map(function(game,idx){return <div  key={game.id} className="  col-md-3">
+{allgames? allgames?.map(function(game,idx){return <div  key={game.id} className="  col-lg-4  col-md-6">
 <Link className="text-decoration-none " to={"/games/Gamedetails/"+ game.id}>
    <div className="game rounded">
       
@@ -80,9 +82,8 @@ export function AllGames(){
  </div>
 
 
-}) :  <div className="position-absolute text-white start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center">
-<i className="fa-solid fa-spin fa-4x  fa-spinner"></i>
-</div>}
+}) :  <Loading/>
+}
 
 
 
@@ -95,9 +96,7 @@ export function AllGames(){
 </div>
 
 
-<div  onClick={getMoreGames} className=" d-flex justify-content-center"> 
-<button  className="btn   btn-outline-secondary py-2 pt-1 more-btn">More Games
- <i  className="fas fa-angle-right"></i></button> </div>
+
 </div>
     
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import Joi, { func } from "joi";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarReg } from "../Navbar/Navbar";
 
@@ -102,43 +103,52 @@ function getSpecificError(key){
 
 
     return<>
+    
+    < Helmet>
+         <title>
+         Log in
+         </title>
+      </ Helmet>
+    <section className="login container     ">
+            <div className="row ">
+            <div className="col-md-6 p-0">
+                <div className="item gaming-img">
 
-
-<section className="logIn">
-
-<div className="container px-2  w-75 py-4">
-        <div className="row">
-        <div className="col-md-6 p-0">
-            <div className="item gaming-img">
+                </div>
             </div>
-        </div>
-        <div className="col-md-6 p-0">
-            <div className="item">
-              <div className="img-cont d-flex align-items-center justify-content-center">
-              <img src={require("../../Images/logo.png")} className=" m-auto" alt="gameoverLogo" />
-              </div>
-                <h2 className="text-center py-3">Log in to Game over!</h2>
-                <form  onSubmit={getValidate} className="py-2 w-75 m-auto">
-                    <input type="email" onChange={getUser} className="form-control my-2" placeholder="email" id="email" />
-                    {getSpecificError("email")? <div className="alert alert-danger"> {getSpecificError("email")}</div>: ""}
+            <div className="col-md-6 p-0">
+                <div className="item ">
+                  <div className="img-container d-flex align-items-center justify-content-center">
+                  <img src={require("../../Images/logo.png")} className=" mx-auto mt-3" alt="gameoverLogo" />
+                  </div>
+                    <h2 className="text-center py-3">Log in to Game over!</h2>
+                    <form  onSubmit={getValidate} className="py-2 w-75 m-auto">
+                        <input type="email" onChange={getUser} className="form-control my-2" placeholder="email" id="email" />
+                        {getSpecificError("email")? <div className="alert alert-danger"> {getSpecificError("email")}</div>: ""}
+                       
+                        {emailerr==undefined?"" : <div className="alert alert-danger">{emailerr}</div>}
+                        <input type="password" onChange={getUser} className="form-control my-4" placeholder="password" id="password" />
+                        {getSpecificError("password")? <div className="alert alert-danger"> password must be from 6-20 characters and numbers only</div> : ""}
+                        <button className="btn btn-primary my-3 text-white w-100">{loading? <i className="fa-solid fa-spin   fa-spinner"></i> : "log in"} </button>
                    
-                    {emailerr==undefined?"" : <div className="alert alert-danger">{emailerr}</div>}
-                    <input type="password" onChange={getUser} className="form-control my-4" placeholder="password" id="password" />
-                    {getSpecificError("password")? <div className="alert alert-danger"> password must be from 6-20 characters and numbers only</div> : ""}
-                    <button className="btn btn-primary my-3 text-white w-100">{loading? <i className="fa-solid fa-spin   fa-spinner"></i> : "log in"} </button>
-               
-       
-                </form>
-                <hr />
-
-                <p className="text-center fw-bold my-5">Not a Member yet ?  <Link className="link" to={"/Register"} >Create account</Link></p>
+           
+                    </form>
+                    <hr />
+    
+                    <p className="text-center fw-bold my-5">Not a Member yet ?  <Link className="link" to={"/Register"} >Create account</Link></p>
+                </div>
             </div>
+        
         </div>
     
-    </div>
-
-</div>
-
-</section>
+    </section>
+    
+  
     </>
-}
+    }
+
+   
+
+
+
+

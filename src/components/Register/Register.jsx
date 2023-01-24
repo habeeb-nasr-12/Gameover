@@ -3,6 +3,8 @@ import Joi from "joi";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarReg } from "../Navbar/Navbar";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 
 export function Register(){
     let [joiError,setJoiError]=useState(null)
@@ -97,12 +99,15 @@ function getSpecificError(key){
 
 
 
-    return<>
- 
+    return <>
+      <Helmet>
+         <title>
+         Register
+         </title>
+      </Helmet>
+    <section  className="Register ">
 
-<section className="Register">
-
-<div className="container px-2  w-75 py-4">
+<div className="container ">
         <div className="row">
         <div className="col-md-6 p-0">
             <div className="item gaming-img">
@@ -143,6 +148,8 @@ function getSpecificError(key){
 </div>
 
 </section>
-    </>
+ 
+
+</>
 
 }

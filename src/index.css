@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&display=swap');
 
+
 body,select {
  
   color: #aaa;
   background-color: #272b30;
 font-family: "Montserrat Alternates";
 }
+
 select{
   border: none !important;
 }
@@ -23,15 +25,20 @@ select{
 }
 .gaming-img{
   background-image: url(../src/Images/gaming.jpg);
-  background-size: 100% 100%;
+  background-size:100% 100%;
 
 }
+
 .item{
-  background-color: #32383e;
-  height: 80vh;
+background-color: #32383e;
+height: 80vh;
 
   
 }
+body{
+  overflow: scroll !important;
+}
+
 input{
   background-color: #272b30 !important;
   border: none !important;
@@ -51,10 +58,11 @@ form .link{
   text-decoration: none;
   background-color: transparent;
 }
-.logIn img{
+.img-container img{
   width: 100px;
 
 }
+
 li{
   list-style: none;
 
@@ -64,7 +72,7 @@ span {
 }
 
 .home-sec{
-   background: url(http://routeegypt.com/GameOver/paladins.b44d33d6e7ee1ba8.png) ;
+    background:url(http://routeegypt.com/GameOver/paladins.b44d33d6e7ee1ba8.png) ;
     background-repeat: no-repeat;
     background-color: #1c1e22;
     background-position: top;
@@ -73,7 +81,10 @@ span {
     margin-bottom: 1rem;
     border: 1px solid rgba(0,0,0,.6);
     padding: 4rem 2rem;
-
+    -webkit-border-radius:.3rem;
+    -moz-border-radius:.3rem;
+    -ms-border-radius:.3rem;
+    -o-border-radius:.3rem;
 }
 .lead{
   font-size: 1.25rem;
@@ -125,4 +136,18 @@ a,a:hover{
 .blue{
   background-color: #4799eb !important;
   padding: 1.5px !important;
+}
+
+.w-90{
+  width: 90%;
+}
+li{
+  margin-left: 15px;
+  margin-right: 15px;
+}
+@media screen  and (max-width:990px){
+  .logout{
+    text-align: center;
+    margin-top: 10px;
+  }
 }

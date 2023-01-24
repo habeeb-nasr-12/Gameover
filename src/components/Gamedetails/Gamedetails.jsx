@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom"
+import { Loading } from "../LoadingScreen/Loading";
 
 
 export function Gamedetails() {
@@ -35,6 +37,11 @@ export function Gamedetails() {
 
     return <>
         {gameDetails? <section ><div className="container my-5"><div className="row mt-5">
+        < Helmet>
+         <title>
+         {gameDetails.title}
+         </title>
+      </ Helmet>
             <div className="col-md-4">
                 <div >
                     <img alt="game" className="w-100 rounded-2" src={gameDetails.thumbnail} />
@@ -119,10 +126,7 @@ export function Gamedetails() {
 
 
 
-        </section>:
-    <div className="position-absolute text-white start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center">
-        <i className="fa-solid fa-spin fa-4x  fa-spinner"></i>
-        </div>}
+        </section>: <Loading/>}
 
 
 
