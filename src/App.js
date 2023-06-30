@@ -2,8 +2,8 @@ import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { createBrowserRouter, createHashRouter, Navigate, RouterProvider } from "react-router-dom";
 import { All, AllGames } from "./components/All/AllGames";
-
-
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
 
 import { Gamedetails } from "./components/Gamedetails/Gamedetails";
 
@@ -54,7 +54,7 @@ useEffect(function(){
 
 function ProtectedRoute(props){
 
-  if (localStorage.getItem("token")!=null){
+  if (localStorage.getItem("token")){
     return <>{props.children} </>
   }
   else{
@@ -107,10 +107,10 @@ const router= createHashRouter([
 
 
   return <>
-  
+
   <RouterProvider router={router} />
-  
-  
+
+  <ToastContainer/>
   
   </>;
 }

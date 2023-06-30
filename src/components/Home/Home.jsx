@@ -31,8 +31,7 @@ export function Home( ){
     
    
   useLayoutEffect(()=>{
-     dispatch(getMainApi())
-
+    
 
   
  

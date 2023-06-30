@@ -87,7 +87,7 @@ export function Navbar({ loggedinUser, remove }) {
              
 
              
-            {loggedinUser!=null? <>
+            {localStorage.getItem("token")? <>
             
               <ul className="navbar-nav m-auto  d-flex align-items-center justify-content-around w-50">
                 {menuItems.map((el, idx) => {

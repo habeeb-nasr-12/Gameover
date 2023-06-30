@@ -8,6 +8,11 @@ body,select {
 font-family: "Montserrat Alternates";
 }
 
+.error{
+  color: red;
+  
+}
+
 select{
   border: none !important;
 }

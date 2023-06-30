@@ -1,154 +1,135 @@
 import axios from "axios";
-import Joi, { func } from "joi";
+
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarReg } from "../Navbar/Navbar";
-
-export function Login ({getUserData}){
-    let [joiError,setJoiError]=useState(null)
-    let [emailerr,setEmailErr]=useState(undefined)
-    let [loading ,setLoading] =useState(false)
-
-     let [user,setUser]=useState({
-            "email":"",
-            "password":""
-            
-     })
-     let navigate= useNavigate()
-     let joiResponse
-
-    function getUser(e){
-        setJoiError(null)
-        setEmailErr(undefined)
-        let inputvalue= e.target.value
-        let propertyName= e.target.id
-        let newUser={...user}
-        newUser[propertyName]=inputvalue
-        setUser(newUser)
-       
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 
 
-    
-    }
+export function Login() {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors, isValid, },
+    } = useForm()
+    const [loading, setLoading] = useState(false)
+    let navigate = useNavigate()
 
-    let joilist
-    function getValidate(e){
-        e.preventDefault()
+
+
+
+
+    const onSubmit = async (FormData) => {
         setLoading(true)
+        try {
+            let { data } = await axios.post(" http://accountbased.somee.com/api/Account/Login", {
 
-    const schema=Joi.object({
-            "email": Joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } } ),
-            "password": Joi.string().max(30).min(6).required(),
-         
-        })
- joiResponse=schema.validate(user,{abortEarly: false})
+                email: FormData?.email,
+                password: FormData?.password,
+            })
 
-   if (joiResponse.error==undefined){
-    senduser()
-  
-   }
-   else{
-    joilist=joiResponse.error.details
-    setJoiError(joilist)
+            if (data?.token) {
+                navigate("/")
+                localStorage.setItem("token", data.token)
 
-setLoading(false)
-   }
-    }
+            }
+            setLoading(false)
+        } catch (error) {
 
+            toast.error(error.response.data.message)
+            setLoading(false)
 
-async function senduser(){
-    setLoading(true)
-    let {data}= await axios.post("https://sticky-note-fe.vercel.app/signin",user)
- 
-
-    if(data.message=="success"){
-    navigate("/home")
-    localStorage.setItem( "token", data.token)
-    getUserData()
-    }
-    else{
-        setEmailErr( data.message)
-        setLoading(false)
-}
-
-}
-
-function getSpecificError(key){
- 
-    if (joiError != null){
-
-        for (let i = 0; i < joiError.length; i++) {
-        if (joiError[i].context.key ==key){
-            return  joiError[i].message
-        }
-        
-        return ""
         }
 
+
+
     }
 
-   
-
-}
 
 
 
 
 
+    return <>
+        <Helmet>
+            <title>
+                Register
+            </title>
+        </Helmet>
+        <section className="Register ">
+
+            <div className="container ">
+                <div className="row m-0 p-0">
+                    <div className="col-md-6 p-0">
+                        <div className="item gaming-img">
+                        </div>
+                    </div>
+                    <div className="col-md-6 p-0">
+                        <div className="item">
+                            <h2 className="text-center py-3">Log in </h2>
+                            <form onSubmit={handleSubmit(onSubmit)} className="py-2 w-75 m-auto">
 
 
 
 
 
-    return<>
-    
-    < Helmet>
-         <title>
-         Log in
-         </title>
-      </ Helmet>
-    <section className="login container     ">
-            <div className="row ">
-            <div className="col-md-6 p-0">
-                <div className="item gaming-img">
+                                <input type="email" className="form-control my-4" placeholder="email"  {...register("email", {
+                                    required: "This filed is required ",
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                                        message: "Enter vailed mail"
+                                    },
+                                    emailAvailable: async (value) => {
+                                        const response = await fetch(` http://accountbased.somee.com/api/users?email=${value}`)
+                                        const data = await response.json()
+                                        return data.length == 0 || "This email is already reserved "
+
+                                    },
+
+
+                                })} />
+                                {errors?.email && <p className="error my-4">{errors.email.message}</p>}
+
+
+                                <input type="password" className="form-control my-4" placeholder="password" {...register("password", {
+                                    required: "This filed is required ",
+                                    pattern: {
+                                        value: /^.{8,}$/,
+                                        message: "Min length is 8"
+                                    }
+
+
+                                })} name="password" />
+
+                                {errors?.password && <p className="error my-4">{errors.password.message}</p>}
+
+
+
+                                <button className="btn btn-primary my-3 text-white w-100">{loading ? <i className="fa-solid fa-spin   fa-spinner"></i> : " Log in"}</button>
+
+
+
+
+                            </form>
+                            <hr />
+
+                            <p className="text-center fw-bold my-5">Not a Member yet ?  <Link className="link" to={"/Register"} >Register</Link></p>
+                        </div>
+                    </div>
 
                 </div>
+
             </div>
-            <div className="col-md-6 p-0">
-                <div className="item ">
-                  <div className="img-container d-flex align-items-center justify-content-center">
-                  <img src={require("../../Images/logo.png")} className=" mx-auto mt-3" alt="gameoverLogo" />
-                  </div>
-                    <h2 className="text-center py-3">Log in to Game over!</h2>
-                    <form  onSubmit={getValidate} className="py-2 w-75 m-auto">
-                        <input type="email" onChange={getUser} className="form-control my-2" placeholder="email" id="email" />
-                        {getSpecificError("email")? <div className="alert alert-danger"> {getSpecificError("email")}</div>: ""}
-                       
-                        {emailerr==undefined?"" : <div className="alert alert-danger">{emailerr}</div>}
-                        <input type="password" onChange={getUser} className="form-control my-4" placeholder="password" id="password" />
-                        {getSpecificError("password")? <div className="alert alert-danger"> password must be from 6-20 characters and numbers only</div> : ""}
-                        <button className="btn btn-primary my-3 text-white w-100">{loading? <i className="fa-solid fa-spin   fa-spinner"></i> : "log in"} </button>
-                   
-           
-                    </form>
-                    <hr />
-    
-                    <p className="text-center fw-bold my-5">Not a Member yet ?  <Link className="link" to={"/Register"} >Create account</Link></p>
-                </div>
-            </div>
-        
-        </div>
-    
-    </section>
-    
-  
+
+        </section>
+
+
     </>
-    }
 
-   
-
-
+}
 
 
